@@ -82,7 +82,7 @@ const startDrag = (e) => {
   }
 
   isDragging = true;
-  if (!dragged) dragged = true;
+  dragged = false;
   
   buyBtn.classList.add('dragging');
   buyBtn.style.position = 'fixed';
@@ -144,7 +144,7 @@ setInterval(() => {
 buyBtn.addEventListener('click', function(e) {
 
   // Only block click on desktop if it was dragged
-  if (window.innerWidth > 768 && dragged) {
+  if (dragged) {
     e.preventDefault();
   }
 
@@ -246,5 +246,6 @@ const observer = new IntersectionObserver(
 );
 
 revealElements.forEach((el) => observer.observe(el));
+
 
 
