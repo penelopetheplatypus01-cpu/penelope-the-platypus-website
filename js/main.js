@@ -51,7 +51,7 @@ setInterval(() => {
 }, 2500);
 
 
-
+/* Floating Buy */
 const buyBtn = document.getElementById('floatingBuy');
 
 let isDragging = false;
@@ -246,4 +246,5 @@ const observer = new IntersectionObserver(
 );
 
 revealElements.forEach((el) => observer.observe(el));
+
 
