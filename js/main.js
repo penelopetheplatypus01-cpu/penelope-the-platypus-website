@@ -75,12 +75,15 @@ let textIndex = 0;
 
 /* ===== START DRAG ===== */
 const startDrag = (e) => {
-  // Only prevent default on desktop
+
+  // Desktop: prevent default
   if (!e.touches) {
     e.preventDefault();
   }
+
   isDragging = true;
-  dragged = false;
+  if (!dragged) dragged = true;
+  
   buyBtn.classList.add('dragging');
   buyBtn.style.position = 'fixed';
 
@@ -139,11 +142,13 @@ setInterval(() => {
 
 /* ===== SAFE CLICK ===== */
 buyBtn.addEventListener('click', function(e) {
-  if (dragged) {
-    // prevent click if it was a drag
+
+  // Only block click on desktop if it was dragged
+  if (window.innerWidth > 768 && dragged) {
     e.preventDefault();
-    dragged = false;
   }
+
+  dragged = false;
 });
 
 /* ===== RUN AWAY ONCE ===== */
@@ -175,7 +180,12 @@ buyBtn.addEventListener('mousedown', startDrag);
 buyBtn.addEventListener('touchstart', startDrag);
 
 document.addEventListener('mousemove', drag);
-document.addEventListener('touchmove', drag, { passive: false });
+document.addEventListener('touchmove', function(e) {
+  if (isDragging) {
+    e.preventDefault(); // stop scroll
+    drag(e);
+  }
+}, { passive: false });
 
 document.addEventListener('mouseup', stopDrag);
 document.addEventListener('touchend', stopDrag);
@@ -236,3 +246,4 @@ const observer = new IntersectionObserver(
 );
 
 revealElements.forEach((el) => observer.observe(el));
+
